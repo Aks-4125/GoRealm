@@ -3,8 +3,11 @@ package com.aks4125.gorealm.repository;
 import android.util.Log;
 
 import com.aks4125.gorealm.model.CompanyFilterModel;
+import com.aks4125.gorealm.model.CompanyModel;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 import io.realm.Realm;
 
@@ -35,4 +38,23 @@ public class RealmRepository {
     }
 
 
+    public void insertOrUpdateCompanyList(List<CompanyModel> mDataList) {
+        try (Realm mRealm = Realm.getDefaultInstance()) {
+            mRealm.executeTransaction(rlm ->
+                    mRealm.insertOrUpdate(mDataList));
+        }
+    }
+
+    public boolean isCompanyListEmpty() {
+        try (Realm mRealm = Realm.getDefaultInstance()) {
+            return mRealm.where(CompanyModel.class).findAll().isEmpty();
+        }
+    }
+
+    @NotNull
+    public List<CompanyModel> getCompanyList() {
+        try (Realm mRealm = Realm.getDefaultInstance()) {
+            return mRealm.copyFromRealm(mRealm.where(CompanyModel.class).findAll()); // this will not empty in any case
+        }
+    }
 }

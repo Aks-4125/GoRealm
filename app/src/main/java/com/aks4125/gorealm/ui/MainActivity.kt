@@ -28,22 +28,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var mCompanyAdapter: CompanyAdapter
-    private lateinit var mCompanyList: List<CompanyModel>
+    private var mCompanyList: MutableList<CompanyModel> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val turnsType = object : TypeToken<List<CompanyModel>>() {}.type
-        mCompanyList =
-            Gson().fromJson<List<CompanyModel>>(getString(R.string.sampleJson), turnsType)
-
-
         mCompanyAdapter =
             CompanyAdapter(mCompanyList)
+
+
         rvCompany.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = mCompanyAdapter
         }
+
+        // mCompanyList = RealmRepository.getRealm().getCompanyList(mCompanyList)
+        if (RealmRepository.getRealm().isCompanyListEmpty()) {
+            val turnsType = object : TypeToken<List<CompanyModel>>() {}.type
+            mCompanyList =
+                Gson().fromJson<MutableList<CompanyModel>>(getString(R.string.sampleJson), turnsType)
+            RealmRepository.getRealm().insertOrUpdateCompanyList(mCompanyList);
+
+        } else {
+            mCompanyList = RealmRepository.getRealm().getCompanyList()
+        }
+        mCompanyAdapter.updateList(mCompanyList)
+
 
         btnShowFilter.setOnClickListener {
             showDialog()

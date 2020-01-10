@@ -3,13 +3,14 @@ package com.aks4125.gorealm.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.aks4125.gorealm.model.CompanyModel
 import com.aks4125.gorealm.R
 import kotlinx.android.synthetic.main.list_item_company.view.*
 
 
-class CompanyAdapter(private val modelList: List<CompanyModel>) :
+class CompanyAdapter(private val modelList: MutableList<CompanyModel>) :
     RecyclerView.Adapter<CompanyAdapter.CompanyHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CompanyHolder {
         return CompanyHolder(
@@ -25,6 +26,14 @@ class CompanyAdapter(private val modelList: List<CompanyModel>) :
     override fun getItemCount(): Int {
         return modelList.size
     }
+
+    fun updateList(mCompanyList: MutableList<CompanyModel>) {
+        with(modelList){
+            clear()
+            addAll(mCompanyList)
+        }
+    }
+
 
     inner class CompanyHolder(view: View) : RecyclerView.ViewHolder(view) {
 
