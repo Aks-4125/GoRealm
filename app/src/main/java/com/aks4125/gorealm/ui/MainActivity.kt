@@ -2,7 +2,6 @@ package com.aks4125.gorealm.ui
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.Window
 import android.widget.Button
 import android.widget.RadioGroup
@@ -77,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                         FILTER_BY_NAME
                 }
             }
-            var filterModel = CompanyFilterModel()
+            val filterModel = CompanyFilterModel()
             filterModel.ascending = orderSwitch.isChecked
             filterModel.groupId = groupId
 
