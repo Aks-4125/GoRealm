@@ -1,9 +1,11 @@
-package com.aks4125.gorealm
+package com.aks4125.gorealm.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.aks4125.gorealm.model.CompanyModel
+import com.aks4125.gorealm.R
 import kotlinx.android.synthetic.main.list_item_company.view.*
 
 
