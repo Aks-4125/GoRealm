@@ -6,7 +6,6 @@ import android.view.Window
 import android.widget.Button
 import android.widget.RadioGroup
 import android.widget.SearchView.OnQueryTextListener
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SwitchCompat
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity(), MainContractor.IMainView {
 
     private lateinit var mCompanyAdapter: CompanyAdapter
     private var mCompanyList: MutableList<CompanyModel> = arrayListOf()
-    val mainPresenter = MainPresenter(this)
+    private val mainPresenter = MainPresenter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +40,9 @@ class MainActivity : AppCompatActivity(), MainContractor.IMainView {
         rvCompany.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = mCompanyAdapter
+            mCompanyAdapter.onItemClick = { mCompany: CompanyModel ->
+                mainPresenter.insertOrUpdateCompanyModel(mCompany)
+            }
         }
 
         mainPresenter.processJson(getString(R.string.sampleJson))

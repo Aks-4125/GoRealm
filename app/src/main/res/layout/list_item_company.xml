@@ -16,6 +16,7 @@
         <TextView
             android:id="@+id/name"
             android:padding="5dp"
+            android:textColor="@color/colorPrimaryDark"
             style="@style/TextAppearance.AppCompat.Large"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -48,13 +49,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:textColor="@color/colorAccent"
             android:layout_marginEnd="16dp"
             android:drawableStart="@drawable/ic_favorite_black_24dp"
-            android:drawablePadding="10dp"
+            android:drawablePadding="5dp"
             android:gravity="center"
             android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageHeart"
+            android:contentDescription="@string/heart_animation"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:tint="@color/colorPrimaryDark"
+            android:alpha="0"
+            app:srcCompat="@drawable/animator" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

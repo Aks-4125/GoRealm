@@ -32,5 +32,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_list_filter" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAddCompany"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:tint="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

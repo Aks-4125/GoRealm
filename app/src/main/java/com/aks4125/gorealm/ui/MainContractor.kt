@@ -11,6 +11,7 @@ interface MainContractor {
     interface IMainPresenter {
         fun processJson(json: String)
         fun filterData(filterModel: CompanyFilterModel)
+        fun insertOrUpdateCompanyModel(mCompany: CompanyModel)
     }
 
 }

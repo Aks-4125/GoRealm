@@ -14,6 +14,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
+import static com.aks4125.gorealm.ui.MainActivity.FIELD_CLAPS;
 import static com.aks4125.gorealm.ui.MainActivity.FIELD_ID;
 import static com.aks4125.gorealm.ui.MainActivity.FIELD_NAME;
 import static com.aks4125.gorealm.ui.MainActivity.FILTER_BY_CLAPS;
@@ -71,7 +72,7 @@ public class RealmRepository {
         List<CompanyModel> modelList;
         try (Realm mRealm = Realm.getDefaultInstance()) {
             RealmResults<CompanyModel> mQuery = mRealm.where(CompanyModel.class).findAll(); // in memory objects
-            switch (filterModel.getGroupId()) {
+            switch (filterModel.getGroupId()) { // using switch to avoid when(x) lamda to declare final
                 case FILTER_BY_ID:
                     mQuery = mQuery.sort(FIELD_ID, filterModel.getAscending() ? Sort.ASCENDING : Sort.DESCENDING); // in memory query, faster than db
                     break;
@@ -79,7 +80,7 @@ public class RealmRepository {
                     mQuery = mQuery.sort(FIELD_NAME, filterModel.getAscending() ? Sort.ASCENDING : Sort.DESCENDING);
                     break;
                 case FILTER_BY_CLAPS:
-                    mQuery = mQuery.sort("claps", filterModel.getAscending() ? Sort.ASCENDING : Sort.DESCENDING);
+                    mQuery = mQuery.sort(FIELD_CLAPS, filterModel.getAscending() ? Sort.ASCENDING : Sort.DESCENDING);
                     break;
             }
             modelList = new ArrayList<>(mRealm.copyFromRealm(mQuery));
@@ -87,12 +88,25 @@ public class RealmRepository {
         return modelList;
     }
 
-    public CompanyFilterModel getFilterModel() {
+    /**
+     * @return company object
+     */
+    private CompanyFilterModel getFilterModel() {
         try (Realm mRealm = Realm.getDefaultInstance()) {
             CompanyFilterModel dbModel = mRealm.where(CompanyFilterModel.class).findFirst(); // it will have only single record
             if (dbModel != null)
                 return mRealm.copyFromRealm(dbModel);
         }
         return null;
+    }
+
+    /**
+     * @param mCompany object to insert or update into realm
+     */
+    public void insertOrUpdateCompanyObject(@NotNull CompanyModel mCompany) {
+        try (Realm mRealm = Realm.getDefaultInstance()) {
+            mRealm.executeTransaction(rlm -> rlm.insertOrUpdate(mCompany));
+
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.aks4125.gorealm.adapter
 
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,21 +8,22 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.aks4125.gorealm.R
 import com.aks4125.gorealm.model.CompanyModel
 import kotlinx.android.synthetic.main.list_item_company.view.*
 
 
 class CompanyAdapter(private val modelList: MutableList<CompanyModel>) :
-    RecyclerView.Adapter<CompanyAdapter.CompanyHolder>() ,Filterable{
+    RecyclerView.Adapter<CompanyAdapter.CompanyHolder>(), Filterable {
     var filterList = modelList
 
     private val customFilter: Filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence): FilterResults {
             filterList =
-                    modelList.filter {
-                        it.name!!.contains(constraint, true)
-                    }.toMutableList()
+                modelList.filter {
+                    it.name!!.contains(constraint, true)
+                }.toMutableList()
 
 
 
@@ -76,6 +78,7 @@ class CompanyAdapter(private val modelList: MutableList<CompanyModel>) :
         }
     }
 
+    var onItemClick: ((CompanyModel) -> Unit)? = null
 
     inner class CompanyHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -83,12 +86,35 @@ class CompanyAdapter(private val modelList: MutableList<CompanyModel>) :
         private val tvEmpCount = view.tvEmpCount
         private val tvAddress = view.tvAddress
         private val btnClaps = view.btnClaps
+        private val imgHeart = view.imageHeart
+        private var mVector: AnimatedVectorDrawable? = null
+        private var mVectorCompat: AnimatedVectorDrawableCompat? = null
+
 
         fun bind(data: CompanyModel) {
             name.text = data.name
             tvEmpCount.text = itemView.context.getString(R.string.total_emp, data.empCount)
             tvAddress.text = data.address
             btnClaps.text = data.claps.toString()
+
+            val heartDrawable = imgHeart.drawable
+
+            btnClaps.setOnClickListener {
+                //RealmRecyclerViewAdapter alternative but requires managed objects
+                filterList[adapterPosition].claps = filterList[adapterPosition].claps!! + 1
+                notifyItemChanged(adapterPosition)
+                onItemClick?.invoke(filterList[adapterPosition])
+
+                imgHeart.alpha = 0.75f
+                if (heartDrawable is AnimatedVectorDrawable) {
+                    mVector = heartDrawable
+                    mVector?.start()
+                } else if (heartDrawable is AnimatedVectorDrawableCompat) {
+                    mVectorCompat = heartDrawable
+                    mVectorCompat?.start()
+                }
+
+            }
         }
     }
 

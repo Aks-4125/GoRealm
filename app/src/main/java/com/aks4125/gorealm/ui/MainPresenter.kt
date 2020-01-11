@@ -33,5 +33,9 @@ class MainPresenter(val mainView: MainContractor.IMainView) : MainContractor.IMa
         mainView.updateList(mRepository.getFilteredList(filterModel))
     }
 
+    override fun insertOrUpdateCompanyModel(mCompany: CompanyModel) {
+        mRepository.insertOrUpdateCompanyObject(mCompany)
+    }
+
 
 }
