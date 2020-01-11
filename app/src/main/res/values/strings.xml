@@ -8,4 +8,10 @@
     <string name="apply_filter">Apply Filter</string>
     <string name="ascending_order">Ascending Order</string>
     <string name="heart_animation">heart animation</string>
+    <string name="add_company">Add Company</string>
+    <string name="company_address">Company address</string>
+    <string name="valid_id">Company Id is Required</string>
+    <string name="valid_name">Company name is Required</string>
+    <string name="valid_address">Company address is Required</string>
+    <string name="valid_claps">Company claps are Required</string>
 </resources>

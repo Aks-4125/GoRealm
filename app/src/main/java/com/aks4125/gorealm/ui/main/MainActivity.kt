@@ -1,6 +1,7 @@
-package com.aks4125.gorealm.ui
+package com.aks4125.gorealm.ui.main
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.widget.Button
@@ -14,9 +15,11 @@ import com.aks4125.gorealm.R
 import com.aks4125.gorealm.adapter.CompanyAdapter
 import com.aks4125.gorealm.model.CompanyFilterModel
 import com.aks4125.gorealm.model.CompanyModel
+import com.aks4125.gorealm.ui.AddCompanyActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), MainContractor.IMainView {
+class MainActivity : AppCompatActivity(),
+    MainContractor.IMainView {
     companion object {
         const val COMPANY_FILTER_UUID = "c_id"
         const val FILTER_BY_ID = 1
@@ -63,6 +66,10 @@ class MainActivity : AppCompatActivity(), MainContractor.IMainView {
             }
 
         })
+        btnAddCompany.setOnClickListener {
+            startActivity(Intent(this@MainActivity,AddCompanyActivity::class.java))
+            overridePendingTransition(0,0)
+        }
 
     }
 

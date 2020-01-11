@@ -14,12 +14,12 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
-import static com.aks4125.gorealm.ui.MainActivity.FIELD_CLAPS;
-import static com.aks4125.gorealm.ui.MainActivity.FIELD_ID;
-import static com.aks4125.gorealm.ui.MainActivity.FIELD_NAME;
-import static com.aks4125.gorealm.ui.MainActivity.FILTER_BY_CLAPS;
-import static com.aks4125.gorealm.ui.MainActivity.FILTER_BY_ID;
-import static com.aks4125.gorealm.ui.MainActivity.FILTER_BY_NAME;
+import static com.aks4125.gorealm.ui.main.MainActivity.FIELD_CLAPS;
+import static com.aks4125.gorealm.ui.main.MainActivity.FIELD_ID;
+import static com.aks4125.gorealm.ui.main.MainActivity.FIELD_NAME;
+import static com.aks4125.gorealm.ui.main.MainActivity.FILTER_BY_CLAPS;
+import static com.aks4125.gorealm.ui.main.MainActivity.FILTER_BY_ID;
+import static com.aks4125.gorealm.ui.main.MainActivity.FILTER_BY_NAME;
 
 public class RealmRepository {
 

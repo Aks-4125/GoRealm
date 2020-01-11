@@ -1,6 +1,6 @@
 package com.aks4125.gorealm.model
 
-import com.aks4125.gorealm.ui.MainActivity.Companion.COMPANY_FILTER_UUID
+import com.aks4125.gorealm.ui.main.MainActivity.Companion.COMPANY_FILTER_UUID
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 

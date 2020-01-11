@@ -1,4 +1,4 @@
-package com.aks4125.gorealm.ui
+package com.aks4125.gorealm.ui.main
 
 import com.aks4125.gorealm.model.CompanyFilterModel
 import com.aks4125.gorealm.model.CompanyModel

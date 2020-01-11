@@ -1,8 +1,9 @@
-package com.aks4125.gorealm.ui
+package com.aks4125.gorealm.ui.main
 
 import com.aks4125.gorealm.model.CompanyFilterModel
 import com.aks4125.gorealm.model.CompanyModel
 import com.aks4125.gorealm.repository.RealmRepository
+import com.aks4125.gorealm.ui.main.MainContractor
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
