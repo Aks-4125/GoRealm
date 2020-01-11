@@ -48,29 +48,36 @@
             style="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/colorAccent"
-            android:drawableTint="@color/colorPrimaryDark"
             android:layout_marginEnd="16dp"
             android:drawableStart="@drawable/ic_favorite_black_24dp"
             android:drawablePadding="5dp"
+            android:drawableTint="@color/colorPrimaryDark"
             android:gravity="center"
             android:padding="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="@+id/imageHeart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageHeart" />
 
         <ImageView
             android:id="@+id/imageHeart"
-            android:contentDescription="@string/heart_animation"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:alpha="0"
+            android:contentDescription="@string/heart_animation"
+            android:tint="@color/colorPrimaryDark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:tint="@color/colorPrimaryDark"
-            android:alpha="0"
             app:srcCompat="@drawable/animator" />
 
+        <View
+            android:id="@+id/emptyView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnClaps" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

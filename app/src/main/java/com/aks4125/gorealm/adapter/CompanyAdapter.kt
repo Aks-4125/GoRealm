@@ -87,11 +87,18 @@ class CompanyAdapter(private val modelList: MutableList<CompanyModel>) :
         private val tvAddress = view.tvAddress
         private val btnClaps = view.btnClaps
         private val imgHeart = view.imageHeart
+        private val emptyView = view.emptyView
         private var mVector: AnimatedVectorDrawable? = null
         private var mVectorCompat: AnimatedVectorDrawableCompat? = null
 
 
         fun bind(data: CompanyModel) {
+            if (adapterPosition == itemCount - 1)
+                emptyView.visibility = View.VISIBLE
+            else
+                emptyView.visibility = View.GONE
+
+
             name.text = data.name
             tvEmpCount.text = itemView.context.getString(R.string.total_emp, data.empCount)
             tvAddress.text = data.address

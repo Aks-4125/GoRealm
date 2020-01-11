@@ -67,8 +67,9 @@ class MainActivity : AppCompatActivity(),
 
         })
         btnAddCompany.setOnClickListener {
-            startActivity(Intent(this@MainActivity,AddCompanyActivity::class.java))
-            overridePendingTransition(0,0)
+            mSearchView.setQuery("", true)
+            startActivity(Intent(this@MainActivity, AddCompanyActivity::class.java))
+            overridePendingTransition(0, 0)
         }
 
     }
