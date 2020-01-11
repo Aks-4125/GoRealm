@@ -7,9 +7,18 @@ import com.aks4125.gorealm.model.CompanyModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
+
+import static com.aks4125.gorealm.ui.MainActivity.FIELD_ID;
+import static com.aks4125.gorealm.ui.MainActivity.FIELD_NAME;
+import static com.aks4125.gorealm.ui.MainActivity.FILTER_BY_CLAPS;
+import static com.aks4125.gorealm.ui.MainActivity.FILTER_BY_ID;
+import static com.aks4125.gorealm.ui.MainActivity.FILTER_BY_NAME;
 
 public class RealmRepository {
 
@@ -56,5 +65,34 @@ public class RealmRepository {
         try (Realm mRealm = Realm.getDefaultInstance()) {
             return mRealm.copyFromRealm(mRealm.where(CompanyModel.class).findAll()); // this will not empty in any case
         }
+    }
+
+    public List<CompanyModel> getFilteredList(@NotNull CompanyFilterModel filterModel) {
+        List<CompanyModel> modelList;
+        try (Realm mRealm = Realm.getDefaultInstance()) {
+            RealmResults<CompanyModel> mQuery = mRealm.where(CompanyModel.class).findAll(); // in memory objects
+            switch (filterModel.getGroupId()) {
+                case FILTER_BY_ID:
+                    mQuery = mQuery.sort(FIELD_ID, filterModel.getAscending() ? Sort.ASCENDING : Sort.DESCENDING); // in memory query, faster than db
+                    break;
+                case FILTER_BY_NAME:
+                    mQuery = mQuery.sort(FIELD_NAME, filterModel.getAscending() ? Sort.ASCENDING : Sort.DESCENDING);
+                    break;
+                case FILTER_BY_CLAPS:
+                    mQuery = mQuery.sort("claps", filterModel.getAscending() ? Sort.ASCENDING : Sort.DESCENDING);
+                    break;
+            }
+            modelList = new ArrayList<>(mRealm.copyFromRealm(mQuery));
+        }
+        return modelList;
+    }
+
+    public CompanyFilterModel getFilterModel() {
+        try (Realm mRealm = Realm.getDefaultInstance()) {
+            CompanyFilterModel dbModel = mRealm.where(CompanyFilterModel.class).findFirst(); // it will have only single record
+            if (dbModel != null)
+                return mRealm.copyFromRealm(dbModel);
+        }
+        return null;
     }
 }

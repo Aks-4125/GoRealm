@@ -3,15 +3,60 @@ package com.aks4125.gorealm.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.aks4125.gorealm.model.CompanyModel
 import com.aks4125.gorealm.R
+import com.aks4125.gorealm.model.CompanyModel
 import kotlinx.android.synthetic.main.list_item_company.view.*
 
 
 class CompanyAdapter(private val modelList: MutableList<CompanyModel>) :
-    RecyclerView.Adapter<CompanyAdapter.CompanyHolder>() {
+    RecyclerView.Adapter<CompanyAdapter.CompanyHolder>() ,Filterable{
+    var filterList = modelList
+
+    private val customFilter: Filter = object : Filter() {
+        override fun performFiltering(constraint: CharSequence): FilterResults {
+            filterList =
+                    modelList.filter {
+                        it.name!!.contains(constraint, true)
+                    }.toMutableList()
+
+
+
+            return FilterResults().apply {
+                values = filterList
+                count = filterList.size
+            }
+        }
+
+        override fun publishResults(constraint: CharSequence, results: FilterResults) {
+            notifyDataSetChanged()
+        }
+    }
+
+    override fun getFilter(): Filter = customFilter
+    override fun getItemCount() = filterList.size
+
+
+    //TODO later if required
+    fun notifyChanges(oldList: MutableList<CompanyModel>, newList: MutableList<CompanyModel>) {
+        val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldList[oldItemPosition].id == newList[newItemPosition].id
+            }
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldList[oldItemPosition] == newList[newItemPosition]
+            }
+
+            override fun getOldListSize() = oldList.size
+            override fun getNewListSize() = newList.size
+        })
+        diff.dispatchUpdatesTo(this)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CompanyHolder {
         return CompanyHolder(
             LayoutInflater.from(parent.context)
@@ -20,17 +65,14 @@ class CompanyAdapter(private val modelList: MutableList<CompanyModel>) :
     }
 
     override fun onBindViewHolder(holder: CompanyHolder, position: Int) {
-        holder.bind(modelList[position])
+        holder.bind(filterList[position])
     }
 
-    override fun getItemCount(): Int {
-        return modelList.size
-    }
-
-    fun updateList(mCompanyList: MutableList<CompanyModel>) {
-        with(modelList){
+    fun updateList(mList: MutableList<CompanyModel>) {
+        with(filterList) {
             clear()
-            addAll(mCompanyList)
+            addAll(mList)
+            notifyDataSetChanged()
         }
     }
 

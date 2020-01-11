@@ -5,30 +5,32 @@ import android.os.Bundle
 import android.view.Window
 import android.widget.Button
 import android.widget.RadioGroup
+import android.widget.SearchView.OnQueryTextListener
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aks4125.gorealm.R
 import com.aks4125.gorealm.adapter.CompanyAdapter
 import com.aks4125.gorealm.model.CompanyFilterModel
 import com.aks4125.gorealm.model.CompanyModel
-import com.aks4125.gorealm.repository.RealmRepository
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainContractor.IMainView {
     companion object {
-
         const val COMPANY_FILTER_UUID = "c_id"
         const val FILTER_BY_ID = 1
         const val FILTER_BY_CLAPS = 2
         const val FILTER_BY_NAME = 3
-
+        const val FIELD_ID = "id"
+        const val FIELD_NAME = "name"
+        const val FIELD_CLAPS = "claps"
     }
 
     private lateinit var mCompanyAdapter: CompanyAdapter
     private var mCompanyList: MutableList<CompanyModel> = arrayListOf()
+    val mainPresenter = MainPresenter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,32 +38,34 @@ class MainActivity : AppCompatActivity() {
         mCompanyAdapter =
             CompanyAdapter(mCompanyList)
 
-
         rvCompany.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = mCompanyAdapter
         }
 
-        // mCompanyList = RealmRepository.getRealm().getCompanyList(mCompanyList)
-        if (RealmRepository.getRealm().isCompanyListEmpty()) {
-            val turnsType = object : TypeToken<List<CompanyModel>>() {}.type
-            mCompanyList =
-                Gson().fromJson<MutableList<CompanyModel>>(getString(R.string.sampleJson), turnsType)
-            RealmRepository.getRealm().insertOrUpdateCompanyList(mCompanyList);
-
-        } else {
-            mCompanyList = RealmRepository.getRealm().getCompanyList()
-        }
-        mCompanyAdapter.updateList(mCompanyList)
-
+        mainPresenter.processJson(getString(R.string.sampleJson))
 
         btnShowFilter.setOnClickListener {
             showDialog()
         }
+        mSearchView.setOnQueryTextListener(object : OnQueryTextListener,
+            SearchView.OnQueryTextListener {
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                mCompanyAdapter.filter.filter(newText)
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+        })
 
     }
 
     private fun showDialog() {
+        val filterModel = CompanyFilterModel()
         val dialog = Dialog(this@MainActivity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
@@ -69,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         val group = dialog.findViewById(R.id.filterGroup) as RadioGroup
         val btnApply = dialog.findViewById(R.id.btnApplyFilter) as Button
         val orderSwitch = dialog.findViewById(R.id.orderSwitch) as SwitchCompat
+
         btnApply.setOnClickListener {
             val id = group.checkedRadioButtonId
             var groupId = 0
@@ -86,17 +91,19 @@ class MainActivity : AppCompatActivity() {
                         FILTER_BY_NAME
                 }
             }
-            val filterModel = CompanyFilterModel()
             filterModel.ascending = orderSwitch.isChecked
             filterModel.groupId = groupId
-
-
-            RealmRepository.getRealm().insertOrUpdateCompanyFilter(filterModel)
-
+            mainPresenter.filterData(filterModel)
             dialog.dismiss()
         }
         dialog.show()
 
+    }
+
+    override fun updateList(mutableList: MutableList<CompanyModel>) {
+        mCompanyList.clear()
+        mCompanyList.addAll(mutableList)
+        mCompanyAdapter.updateList(mutableList)
     }
 
 
