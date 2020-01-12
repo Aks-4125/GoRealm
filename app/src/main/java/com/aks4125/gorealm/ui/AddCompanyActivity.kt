@@ -42,7 +42,10 @@ class AddCompanyActivity : AppCompatActivity() {
         with(builder) {
             setTitle("Success")
             setMessage("${edtCompanyName.text.toString()} has been added Successfully.")
-            setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                finish()
+            }
             show()
         }
     }
@@ -64,7 +67,8 @@ class AddCompanyActivity : AppCompatActivity() {
             edtCompanyEmpCount.text.isNullOrEmpty() -> {
                 inputEmpCount.error = getString(R.string.valid_count)
                 return false
-            }edtCompanyAddress.text.isNullOrEmpty() -> {
+            }
+            edtCompanyAddress.text.isNullOrEmpty() -> {
                 inputAddress.error = getString(R.string.valid_address)
                 return false
             }
