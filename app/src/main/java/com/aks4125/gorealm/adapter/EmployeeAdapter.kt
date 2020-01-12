@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aks4125.gorealm.R
 import com.aks4125.gorealm.model.Employees
-import kotlinx.android.synthetic.main.list_item_company.view.*
 import kotlinx.android.synthetic.main.list_item_company.view.tvAddress
 import kotlinx.android.synthetic.main.list_item_employee.view.*
 
