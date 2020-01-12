@@ -8,6 +8,6 @@ open class CompanyFilterModel : RealmObject() {
     var ascending: Boolean = false
     var groupId: Int = 0
     @PrimaryKey
-    val pID: String = COMPANY_FILTER_UUID
+    var pID: String = COMPANY_FILTER_UUID
 
 }

@@ -1,5 +1,7 @@
 package com.aks4125.gorealm.adapter
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.aks4125.gorealm.R
 import com.aks4125.gorealm.model.CompanyModel
+import com.aks4125.gorealm.ui.EmployeeActivity
+import com.aks4125.gorealm.utils.GoConstants.Companion.FIELD_ID
 import kotlinx.android.synthetic.main.list_item_company.view.*
 
 
-class CompanyAdapter(private val modelList: MutableList<CompanyModel>) :
+class CompanyAdapter(val context: Context, private val modelList: MutableList<CompanyModel>) :
     RecyclerView.Adapter<CompanyAdapter.CompanyHolder>(), Filterable {
     var filterList = modelList
 
@@ -91,6 +95,7 @@ class CompanyAdapter(private val modelList: MutableList<CompanyModel>) :
         private val emptyView = view.emptyView
         private var mVector: AnimatedVectorDrawable? = null
         private var mVectorCompat: AnimatedVectorDrawableCompat? = null
+        private val mParent = view.mParent
 
 
         fun bind(data: CompanyModel) {
@@ -123,6 +128,16 @@ class CompanyAdapter(private val modelList: MutableList<CompanyModel>) :
                 }
 
             }
+            mParent.setOnClickListener {
+                context.startActivity(
+                    Intent(
+                        context,
+                        EmployeeActivity::class.java
+                    ).putExtra(FIELD_ID, filterList[adapterPosition].id)
+                )
+            }
+
+
         }
     }
 

@@ -6,7 +6,55 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 apply plugin: 'realm-android'
+apply plugin: "jacoco"
 
+jacoco {
+    toolVersion = "0.8.4"
+}
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+    def fileFilter = ['**/*.html','**/*.css',
+                      '**/*.png','**/*.jpg','**/*.JPG',
+                      '**/io/ionic*','**/io/ionic**','**/io/ionic**/*.class',
+                      '**/org/*','**/org/**','**/org/**/*.class','**/cordova/*','**/cordova/**','**/cordova/**/*.class',
+                      '**/android/*','**/android/**','**/android/**/*.class','**/apache/commons/**','**/io/realm/**',
+                      '**/com/mikhaellopez/**','**/io/michaelrocks/**','**/io/michaelrocks/**','**/org/apache/**',
+                      '**/databinding/**/*.*',
+                      '**/android/databinding/*Binding.*',
+                      '**/*_ViewBinding*/**/*.class',
+                      '**/*_ViewBinding*/**/*.java',
+                      '**/BR.*',
+                      '**/R.*',
+                      '**/R$*.*',
+                      '**/BuildConfig.*',
+                      '**/Manifest*.*',
+                      '**/*_MembersInjector.*',
+                      '**/Dagger*Component.*',
+                      '**/Dagger*Component$Builder.*',
+                      '**/*Module_*Factory.*',
+                      '**/*ParcelConverter.java',
+                      '**/*Parcelable.*',
+                      '**/*_Factory*.*',
+                      '**/*Parcelable*.*',
+                      '**/*_ViewBinding*.*']
+
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug", excludes: fileFilter)
+    def mainSrc = fileTree(dir: "${project.projectDir}/src/main/java/com/example/go_git", excludes: fileFilter)
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = fileTree(dir: "$buildDir", includes: [
+            "jacoco/testDebugUnitTest.exec",
+            "outputs/code-coverage/connected/*coverage.ec"
+    ])
+}
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
@@ -20,6 +68,9 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
+        debug {
+            testCoverageEnabled = true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -29,6 +80,7 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+    testOptions.unitTests.includeAndroidResources = true
 
 }
 def vectordrawable_version = "1.1.0"
@@ -40,8 +92,6 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -61,4 +111,24 @@ dependencies {
      * illustration purposes or state changes in response to user events
      */
     implementation "androidx.vectordrawable:vectordrawable-animated:$vectordrawable_version"
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    testImplementation group: 'org.mockito', name: 'mockito-inline', version: '2.9.0'
+    testImplementation 'org.powermock:powermock-api-mockito2:2.0.2'
+    testImplementation 'org.powermock:powermock-core:2.0.2'
+    testImplementation 'org.powermock:powermock-module-junit4-rule:2.0.2'
+    testImplementation 'org.powermock:powermock-module-junit4:2.0.2'
+    testImplementation 'org.powermock:powermock-classloading-xstream:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.16' // had to add this library to support flowable converters for robolectric
+
+    testImplementation "org.robolectric:robolectric:4.3.1"
+    testImplementation 'com.github.nimbl3:robolectric.shadows-supportv4:4.1-SNAPSHOT'
+
+
+
+
+
 }

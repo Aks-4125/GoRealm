@@ -16,4 +16,9 @@
     <string name="valid_claps">Company claps are Required</string>
     <string name="total_emp_count">Total Employees</string>
     <string name="valid_count">Employee Count is Required</string>
+    <string name="emp_age">Age: %1$d</string>
+    <string name="emp_dept">Department: %1$s</string>
+    <string name="no_record">No Record Found</string>
+    <string name="add_emp">Employees</string>
+
 </resources>

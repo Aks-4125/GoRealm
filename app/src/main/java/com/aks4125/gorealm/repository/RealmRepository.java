@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -103,6 +104,18 @@ public class RealmRepository {
     public void insertOrUpdateCompanyObject(@NotNull CompanyModel mCompany) {
         try (Realm mRealm = Realm.getDefaultInstance()) {
             mRealm.executeTransaction(rlm -> rlm.insertOrUpdate(mCompany));
+        }
+    }
+
+    /**
+     * @param mCompanyId company id
+     * @return company data
+     */
+    public CompanyModel getCompanyById(int mCompanyId) {
+        try (Realm mRealm = Realm.getDefaultInstance()) {
+            return mRealm.copyFromRealm(Objects.requireNonNull(mRealm.where(CompanyModel.class)
+                    .equalTo(FIELD_ID, mCompanyId)
+                    .findFirst()));
 
         }
     }

@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(),
      */
     private fun initUI() {
         mCompanyAdapter =
-            CompanyAdapter(mCompanyList)
+            CompanyAdapter(this@MainActivity,mCompanyList)
         filterModel = CompanyFilterModel()
         filterModel.groupId = FILTER_BY_ID
 
