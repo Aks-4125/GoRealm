@@ -12,6 +12,8 @@ interface MainContractor {
         fun processJson(json: String)
         fun filterData(filterModel: CompanyFilterModel)
         fun insertOrUpdateCompanyModel(mCompany: CompanyModel)
+        fun removeRealmListener()
+        fun setupRealmChangeListener(filterModel: CompanyFilterModel)
     }
 
 }

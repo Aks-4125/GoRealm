@@ -41,8 +41,9 @@ class CompanyAdapter(private val modelList: MutableList<CompanyModel>) :
     override fun getFilter(): Filter = customFilter
     override fun getItemCount() = filterList.size
 
-
-    //TODO later if required
+    /**
+     * diffutils to submit updates
+     */
     fun notifyChanges(oldList: MutableList<CompanyModel>, newList: MutableList<CompanyModel>) {
         val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

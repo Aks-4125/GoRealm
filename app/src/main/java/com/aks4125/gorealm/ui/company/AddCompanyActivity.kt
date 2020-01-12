@@ -1,4 +1,4 @@
-package com.aks4125.gorealm.ui
+package com.aks4125.gorealm.ui.company
 
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
@@ -7,8 +7,12 @@ import com.aks4125.gorealm.R
 import com.aks4125.gorealm.model.CompanyModel
 import com.aks4125.gorealm.repository.RealmRepository
 import kotlinx.android.synthetic.main.activity_add_company.*
+import org.koin.android.ext.android.inject
 
 class AddCompanyActivity : AppCompatActivity() {
+
+    // injecting repository
+    private val realmRepository: RealmRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +32,7 @@ class AddCompanyActivity : AppCompatActivity() {
 
                 // considering replace scenario if user enters the same ID for a company.
                 // i will update here after unit testing if time permits
-                RealmRepository.getRealm().insertOrUpdateCompanyObject(mCompany)
+                realmRepository.insertOrUpdateCompanyObject(mCompany)
                 showDialog()
             }
 
@@ -37,6 +41,9 @@ class AddCompanyActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * upon success of adding company
+     */
     private fun showDialog() {
         val builder = AlertDialog.Builder(this)
         with(builder) {
@@ -50,6 +57,9 @@ class AddCompanyActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * company validations
+     */
     private fun validate(): Boolean {
         inputId.error = null
         inputName.error = null

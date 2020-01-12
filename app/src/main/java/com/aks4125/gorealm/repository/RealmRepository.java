@@ -14,24 +14,19 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
-import static com.aks4125.gorealm.ui.main.MainActivity.FIELD_CLAPS;
-import static com.aks4125.gorealm.ui.main.MainActivity.FIELD_ID;
-import static com.aks4125.gorealm.ui.main.MainActivity.FIELD_NAME;
-import static com.aks4125.gorealm.ui.main.MainActivity.FILTER_BY_CLAPS;
-import static com.aks4125.gorealm.ui.main.MainActivity.FILTER_BY_ID;
-import static com.aks4125.gorealm.ui.main.MainActivity.FILTER_BY_NAME;
+import static com.aks4125.gorealm.utils.GoConstants.FIELD_CLAPS;
+import static com.aks4125.gorealm.utils.GoConstants.FIELD_ID;
+import static com.aks4125.gorealm.utils.GoConstants.FIELD_NAME;
+import static com.aks4125.gorealm.utils.GoConstants.FILTER_BY_ID;
+import static com.aks4125.gorealm.utils.GoConstants.FILTER_BY_NAME;
+
 
 public class RealmRepository {
 
-    private static RealmRepository realmRepository;
 
-    public static RealmRepository getRealm() {
-        if (realmRepository == null)
-            realmRepository = new RealmRepository();
-
-        return realmRepository;
-    }
-
+    /**
+     * @param filterModel filter company objects
+     */
     public void insertOrUpdateCompanyFilter(@NotNull CompanyFilterModel filterModel) {
         try (Realm mRealm = Realm.getDefaultInstance()) {
             CompanyFilterModel dbModel = mRealm.where(CompanyFilterModel.class).findFirst(); // it will have only single record
@@ -48,6 +43,9 @@ public class RealmRepository {
     }
 
 
+    /**
+     * @param mDataList company list to insert or update
+     */
     public void insertOrUpdateCompanyList(List<CompanyModel> mDataList) {
         try (Realm mRealm = Realm.getDefaultInstance()) {
             mRealm.executeTransaction(rlm ->
@@ -55,12 +53,18 @@ public class RealmRepository {
         }
     }
 
+    /**
+     * @return true if no company data in database
+     */
     public boolean isCompanyListEmpty() {
         try (Realm mRealm = Realm.getDefaultInstance()) {
             return mRealm.where(CompanyModel.class).findAll().isEmpty();
         }
     }
 
+    /**
+     * @return list of all companies
+     */
     @NotNull
     public List<CompanyModel> getCompanyList() {
         try (Realm mRealm = Realm.getDefaultInstance()) {
@@ -68,36 +72,29 @@ public class RealmRepository {
         }
     }
 
+
+    /**
+     * @param filterModel filtering data for company
+     * @return list of filtered companies
+     */
     public List<CompanyModel> getFilteredList(@NotNull CompanyFilterModel filterModel) {
         List<CompanyModel> modelList;
         try (Realm mRealm = Realm.getDefaultInstance()) {
             RealmResults<CompanyModel> mQuery = mRealm.where(CompanyModel.class).findAll(); // in memory objects
-            switch (filterModel.getGroupId()) { // using switch to avoid when(x) lamda to declare final
+            switch (filterModel.getGroupId()) {
                 case FILTER_BY_ID:
                     mQuery = mQuery.sort(FIELD_ID, filterModel.getAscending() ? Sort.ASCENDING : Sort.DESCENDING); // in memory query, faster than db
                     break;
                 case FILTER_BY_NAME:
                     mQuery = mQuery.sort(FIELD_NAME, filterModel.getAscending() ? Sort.ASCENDING : Sort.DESCENDING);
                     break;
-                case FILTER_BY_CLAPS:
+                default:
                     mQuery = mQuery.sort(FIELD_CLAPS, filterModel.getAscending() ? Sort.ASCENDING : Sort.DESCENDING);
                     break;
             }
             modelList = new ArrayList<>(mRealm.copyFromRealm(mQuery));
         }
         return modelList;
-    }
-
-    /**
-     * @return company object
-     */
-    private CompanyFilterModel getFilterModel() {
-        try (Realm mRealm = Realm.getDefaultInstance()) {
-            CompanyFilterModel dbModel = mRealm.where(CompanyFilterModel.class).findFirst(); // it will have only single record
-            if (dbModel != null)
-                return mRealm.copyFromRealm(dbModel);
-        }
-        return null;
     }
 
     /**
