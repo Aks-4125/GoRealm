@@ -29,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            app:errorEnabled="true"
-            android:layout_marginEnd="20dp">
+            android:layout_marginEnd="20dp"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtCompanyId"
@@ -47,9 +47,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            app:errorEnabled="true"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
+            app:errorEnabled="true"
             tools:layout_editor_absoluteX="1dp"
             tools:layout_editor_absoluteY="63dp">
 
@@ -65,13 +65,36 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputEmpCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
             app:errorEnabled="true"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="63dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtCompanyEmpCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="0123456789"
+                android:hint="@string/total_emp_count"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:maxLength="9"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp">
+            android:layout_marginEnd="20dp"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtCompanyAddress"
@@ -87,12 +110,12 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputClaps"
-            app:errorEnabled="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
+            app:errorEnabled="true"
             tools:layout_editor_absoluteX="1dp"
             tools:layout_editor_absoluteY="63dp">
 

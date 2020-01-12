@@ -16,7 +16,10 @@ import com.aks4125.gorealm.adapter.CompanyAdapter
 import com.aks4125.gorealm.model.CompanyFilterModel
 import com.aks4125.gorealm.model.CompanyModel
 import com.aks4125.gorealm.ui.AddCompanyActivity
+import io.realm.Realm
+import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity(),
     MainContractor.IMainView {
@@ -30,6 +33,10 @@ class MainActivity : AppCompatActivity(),
         const val FIELD_CLAPS = "claps"
     }
 
+    private lateinit var filterModel: CompanyFilterModel
+    private lateinit var realmInstance: Realm
+    private lateinit var listenerMai: Unit
+    private lateinit var companyResult: RealmResults<CompanyModel>
     private lateinit var mCompanyAdapter: CompanyAdapter
     private var mCompanyList: MutableList<CompanyModel> = arrayListOf()
     private val mainPresenter = MainPresenter(this)
@@ -39,6 +46,9 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
         mCompanyAdapter =
             CompanyAdapter(mCompanyList)
+
+        filterModel = CompanyFilterModel()
+        filterModel.groupId = FILTER_BY_ID
 
         rvCompany.apply {
             layoutManager = LinearLayoutManager(context)
@@ -66,7 +76,14 @@ class MainActivity : AppCompatActivity(),
             }
 
         })
+
+
         btnAddCompany.setOnClickListener {
+            realmInstance = Realm.getDefaultInstance()
+            companyResult = realmInstance.where(CompanyModel::class.java).findAll()
+            listenerMai = companyResult.addChangeListener { _, _ ->
+                mainPresenter.filterData(filterModel) //updating list without resetting filter
+            }
             mSearchView.setQuery("", true)
             startActivity(Intent(this@MainActivity, AddCompanyActivity::class.java))
             overridePendingTransition(0, 0)
@@ -74,8 +91,16 @@ class MainActivity : AppCompatActivity(),
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (::realmInstance.isInitialized) {
+            realmInstance.removeAllChangeListeners()
+            realmInstance.close()
+        }
+    }
+
     private fun showDialog() {
-        val filterModel = CompanyFilterModel()
+        filterModel = CompanyFilterModel()
         val dialog = Dialog(this@MainActivity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
@@ -115,6 +140,5 @@ class MainActivity : AppCompatActivity(),
         mCompanyList.addAll(mutableList)
         mCompanyAdapter.updateList(mutableList)
     }
-
 
 }

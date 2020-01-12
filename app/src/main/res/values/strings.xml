@@ -14,4 +14,6 @@
     <string name="valid_name">Company name is Required</string>
     <string name="valid_address">Company address is Required</string>
     <string name="valid_claps">Company claps are Required</string>
+    <string name="total_emp_count">Total Employees</string>
+    <string name="valid_count">Employee Count is Required</string>
 </resources>
