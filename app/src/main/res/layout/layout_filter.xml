@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="20dp">
+
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/orderSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:switchPadding="10dp"
+        android:text="@string/ascending_order"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/filterGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/orderSwitch"
+        app:layout_constraintStart_toStartOf="@+id/orderSwitch"
+        app:layout_constraintTop_toBottomOf="@+id/orderSwitch">
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/radioCompanyId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/company_id" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/radioClaps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/claps" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/radioCompanyName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/company_name" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnApplyFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/apply_filter"
+        app:layout_constraintEnd_toEndOf="@+id/orderSwitch"
+        app:layout_constraintStart_toStartOf="@+id/orderSwitch"
+        app:layout_constraintTop_toBottomOf="@+id/filterGroup" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
